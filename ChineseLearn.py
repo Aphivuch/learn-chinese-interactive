@@ -1,56 +1,62 @@
 import streamlit as st
 
-# --- 🎨 ตั้งค่าหน้าตาเว็บให้ดูดีและพรีเมียม ---
+# --- 🎨 1. ตั้งค่าหน้าตาแอปให้พรีเมียม เรียบหรู ---
 st.set_page_config(page_title="ChineseLearn 🇨🇳", page_icon="🚌", layout="centered")
 
-# ตกแต่งสไตล์เพิ่มเติมให้สวยงาม
+# ใช้ CSS ปรับแต่ง UI ให้ดูสะอาด สบายตา เหมาะกับเด็กๆ
 st.markdown("""
     <style>
-    .big-title { font-size: 36px; font-weight: bold; text-align: center; color: #2c3e50; margin-bottom: 20px; }
-    .bus-template { background-color: #f0f3f6; padding: 20px; border-radius: 15px; border-left: 10px solid #3498db; margin-bottom: 25px; text-align: center; font-size: 24px; font-weight: bold; }
+    .main-title { font-size: 36px; font-weight: bold; text-align: center; color: #2c3e50; margin-bottom: 20px; }
+    .bus-container { background-color: #f8f9fa; padding: 30px; border-radius: 20px; border: 3px solid #3498db; text-align: center; font-size: 40px; margin-bottom: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    .bus-text { font-size: 18px; color: #7f8c8d; font-weight: normal; margin-top: 5px; }
+    .question-text { font-size: 24px; font-weight: bold; text-align: center; color: #2c3e50; line-height: 1.6; margin-bottom: 30px; }
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="big-title">🇨🇳 ChineseLearn v1.1</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-title">🇨🇳 ChineseLearn</div>', unsafe_allow_html=True)
 
-# --- 🚌 ส่วนที่ 1: กล่องดีไซน์รถเมล์แบบดูดีขึ้น ---
-st.markdown('<div class="bus-template">🚌 [ ภาพรถเมล์ 公共汽车 ]</div>', unsafe_allow_html=True)
+# --- 🚌 2. ส่วนแสดงภาพรถเมล์ ---
+st.markdown('<div class="bus-container">🚌<div class="bus-text">ภาพรถเมล์ 公共汽车</div></div>', unsafe_allow_html=True)
 
-# --- ❓ ส่วนที่ 2: โจทย์คำถาม ---
-st.markdown("### ❓ **คำถามประจำวัน**")
-st.markdown("#### เราจะนั่งรถเมล์สายไหนไปวังเยาวชน?")
-st.subheader("我们坐几路公共汽车去少年宫？")
+# --- ❓ 3. ส่วนของคำถาม ---
+st.markdown('<div class="question-text">เราจะนั่งรถเมล์สายไหนไปวังเยาวชน?<br><span style="color: #e67e22; font-size: 28px;">我们坐几路公共汽车去少年宫？</span></div>', unsafe_allow_html=True)
 
-st.write("---")
+# --- 📢 4. ระบบตรวจคำตอบและสเตตัสเสียง "太棒了！" ---
+# ลิงก์เสียงภาษาจีนกลางคำว่า 太棒了！ (Tài bàng le!) ของจริง ชัดแจ๋ว
+sound_url = "https://dict.youdao.com/dictvoice?audio=%E5%A4%AA%E6%A3%92%E4%BA%86&le=zh"
 
-# --- 📢 ส่วนที่ 3: ระบบตรวจคำตอบ + แถบเครื่องเล่นเสียงแก้ปัญหาเสียงหาย ---
-# ลิงก์เสียงออนไลน์คำว่า "ไท่ป้างเลอ"
-sound_url = "https://soundoftext.com/static/sounds/zh-CN/c96d859a721869e0618035bc299e900a.mp3"
+# สร้างตัวแปรเก็บสถานะการเลือกตอบ เพื่อแสดงผล ❌ หรือ ✅ หน้าปุ่ม
+if "choice_status" not in st.session_state:
+    st.session_state.choice_status = None
 
-# สร้างปุ่ม 3 ปุ่มเรียงกันในแนวนอน
+# สร้างปุ่มกด 3 ปุ่มเรียงกันในแนวนอน
 col1, col2, col3 = st.columns(3)
 
-# สร้างสเตตัสเก็บค่าการกดคำตอบเพื่อไม่ให้เสียงหายเวลาหน้าจอรี่เฟรช
-if "answered_correct" not in st.session_state:
-    st.session_state.answered_correct = False
-
 with col1:
-    if st.button("35路", use_container_width=True):
-        st.session_state.answered_correct = False
-        st.error("❌ ว้า... ยังไม่ถูก ลองใหม่อีกทีนะ!")
+    # ตั้งชื่อปุ่มตามสเตตัส ถ้ากดแล้วผิดให้ขึ้น ❌ ข้างหน้า
+    btn_35_label = "❌ 35路" if st.session_state.choice_status == "35" else "35路"
+    if st.button(btn_35_label, use_container_width=True):
+        st.session_state.choice_status = "35"
 
 with col2:
-    if st.button("49路", use_container_width=True):
-        st.session_state.answered_correct = True
+    # ถ้ากดถูกให้ขึ้น ✅ ข้างหน้า
+    btn_49_label = "✅ 49路" if st.session_state.choice_status == "49" else "49路"
+    if st.button(btn_49_label, use_container_width=True):
+        st.session_state.choice_status = "49"
 
 with col3:
-    if st.button("28路", use_container_width=True):
-        st.session_state.answered_correct = False
-        st.error("❌ ว้า... ยังไม่ถูก ลองใหม่อีกทีนะ!")
+    # ถ้ากดผิดให้ขึ้น ❌ ข้างหน้า
+    btn_28_label = "❌ 28路" if st.session_state.choice_status == "28" else "28路"
+    if st.button(btn_28_label, use_container_width=True):
+        st.session_state.choice_status = "28"
 
-# ถ้ากดเลือก 49路 (คำตอบที่ถูก)
-if st.session_state.answered_correct:
+st.write("")
+
+# --- 5. ส่วนแสดงผลลัพธ์และการเล่นเสียง ---
+if st.session_state.choice_status == "49":
     st.success("✅ 太棒了! (สุดยอดไปเลย!)")
-    st.markdown("👇 **กดฟังเสียงพูดภาษาจีนตรงนี้ได้เลยครับ**")
-    # แสดงแถบเล่นเสียงของ Streamlit โดยตรง (แก้ปัญหาเสียงเงียบ)
+    # เล่นเสียงคำว่า "太棒了！" อัตโนมัติทันที
     st.audio(sound_url, format="audio/mp3", autoplay=True)
+
+elif st.session_state.choice_status in ["35", "28"]:
+    st.error("❌ ว้า... ยังไม่ถูก ลองใหม่อีกทีนะ!")
