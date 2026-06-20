@@ -74,11 +74,11 @@ elif st.session_state.current_page == "page_1":
     st.markdown('<div class="page-header">หน้า 1</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-title">🇨🇳 ChineseLearn</div>', unsafe_allow_html=True)
 
-    # --- 🚌 2. ส่วนแสดงภาพรถเมล์ขนาดใหญ่ ---
+    # --- ส่วนแสดงภาพรถเมล์ขนาดใหญ่ ---
     st.markdown('<div class="bus-card">🚌<span class="bus-label">ภาพรถเมล์ 公共汽车</span></div>',
                 unsafe_allow_html=True)
 
-    # --- ❓ 3. ส่วนของคำถาม (ใหญ่พิเศษ) ---
+    # --- ส่วนของคำถาม (ใหญ่พิเศษ) ---
     st.markdown("""
         <div class="question-box">
             เราจะนั่งรถเมล์สายไหนไปวังเยาวชน?<br>
@@ -86,11 +86,11 @@ elif st.session_state.current_page == "page_1":
         </div>
     """, unsafe_allow_html=True)
 
-    # --- 📢 4. ระบบจัดการเสียงและเอฟเฟกต์ ---
+    # --- ระบบจัดการเสียงและเอฟเฟกต์ ---
     sound_url = "https://dict.youdao.com/dictvoice?audio=%E5%A4%AA%E6%A3%92%E4%BA%86&le=zh"
     congrats_gif = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJndnZueXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7abKhOpuMcmLjdcI/giphy.gif"
 
-    # สร้างปุ่มกด 3 ปุ่ม (ขนาดใหญ่)
+    # สร้างปุ่มกด 3 ปุ่ม (จัดย่อหน้าให้ถูกต้องสมบูรณ์แล้ว)
     col1, col2, col3 = st.columns(3)
 
     with col1:
@@ -98,17 +98,17 @@ elif st.session_state.current_page == "page_1":
         if st.button(label_35, use_container_width=True):
             st.session_state.choice = "35"
 
-with col2:
-    label_49 = "✅ 49路" if st.session_state.choice == "49" else "49路"
-    if st.button(label_49, use_container_width=True):
-        st.session_state.choice = "49"
+    with col2:
+        label_49 = "✅ 49路" if st.session_state.choice == "49" else "49路"
+        if st.button(label_49, use_container_width=True):
+            st.session_state.choice = "49"
 
-with col3:
-    label_28 = "❌ 28路" if st.session_state.choice == "28" else "28路"
-    if st.button(label_28, use_container_width=True):
-        st.session_state.choice = "28"
+    with col3:
+        label_28 = "❌ 28路" if st.session_state.choice == "28" else "28路"
+        if st.button(label_28, use_container_width=True):
+            st.session_state.choice = "28"
 
-    # --- 5. การแสดงผลลัพธ์ฉลองชัยชนะ 🎉 ---
+    # --- การแสดงผลลัพธ์ฉลองชัยชนะ 🎉 ---
     if st.session_state.choice == "49":
         st.success("✅ 太棒了! (สุดยอดไปเลย!)")
         st.balloons()
@@ -119,6 +119,7 @@ with col3:
         st.write("---")
         if st.button("➡️ ไปยังข้อต่อไป", use_container_width=True):
             st.session_state.current_page = "page_2"
+            st.session_state.choice = None  # รีเซ็ตค่าเลือกตอบสำหรับข้อถัดไป
             st.rerun()
 
     elif st.session_state.choice in ["35", "28"]:
@@ -127,22 +128,23 @@ with col3:
     st.write("")
     st.success("โชคดีนะจั้ะ by:Poor_dev")
 
+
 # =======================================================
 # 🚧 [ หน้า 2: บอกว่ายังไม่มีข้อ 2 ]
 # =======================================================
 elif st.session_state.current_page == "page_2":
-st.write("")
-st.write("")
-st.markdown('<div class="main-title">🚧 ยังไม่มีข้อ 2 จ้า</div>', unsafe_allow_html=True)
-st.markdown('<div class="credit-title" style="font-size:28px;">เดี๋ยว Poor_dev มาเขียนเพิ่มให้นะ!</div>',
-            unsafe_allow_html=True)
+    st.write("")
+    st.write("")
+    st.markdown('<div class="main-title">🚧 ยังไม่มีข้อ 2 จ้า</div>', unsafe_allow_html=True)
+    st.markdown('<div class="credit-title" style="font-size:28px;">เดี๋ยว Poor_dev มาเขียนเพิ่มให้นะ!</div>',
+                unsafe_allow_html=True)
 
-st.write("")
-# ปุ่มกดกลับไปหน้าแรกเพื่อเล่นใหม่
-if st.button("🔄 ย้อนกลับไปหน้าแรก", use_container_width=True):
-    st.session_state.choice = None
-    st.session_state.current_page = "welcome"
-    st.rerun()
+    st.write("")
+    # ปุ่มกดกลับไปหน้าแรกเพื่อเล่นใหม่
+    if st.button("🔄 ย้อนกลับไปหน้าแรก", use_container_width=True):
+        st.session_state.choice = None
+        st.session_state.current_page = "welcome"
+        st.rerun()
 
-st.write("")
-st.success("โชคดีนะจั้ะ by:Poor_dev")
+    st.write("")
+    st.success("โชคดีนะจั้ะ by:Poor_dev")
