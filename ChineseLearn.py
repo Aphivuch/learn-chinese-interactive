@@ -92,3 +92,6 @@ if st.session_state.choice == "49":
 
 elif st.session_state.choice in ["35", "28"]:
     st.error("❌ ว้า... ยังไม่ถูก ลองใหม่อีกทีนะ!")
+
+# เพิ่มข้อความเครดิตท้ายเว็บของคุณเดฟแบบตรงๆ ตามสั่งเลยครับ
+st.success("โชคดีนะจั้ะ by:Poor_dev")
